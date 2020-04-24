@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/system.css}">
+</head>
+<body>
+<div class="">
+    <ul class="layui-nav layui-bg-green headerul" lay-filter="">
+        <li class="layui-nav-item layui-this"><a href="#" th:href="@{/req/index}">首页</a></li>
+        <li class="layui-nav-item"><a href="threshold.html" th:href="@{/req/threshold}">阈值配置</a></li>
+        <li class="layui-nav-item"><a href="monitor.html" th:href="@{/req/monitor}">监控数据查看</a></li>
+        <li class="layui-nav-item"><a href="system.html" th:href="@{/req/system}">系统管理</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/deadthread}">死锁检测</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/audiorecord}">报警记录查看</a></li>
+    </ul>
+
+    <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <!--当前位置-->
+            <div class="content-location">
+                <span class="layui-breadcrumb" lay-separator="/">
+                  <a href="">监控平台</a>
+                  <a href="">首页</a>
+                </span>
+            </div>
+            <hr/>
+
+            <div class="content-system-table">
+                <div class="layui-card">
+                    <div class="layui-card-header"><h1>宗旨</h1></div>
+                    <div class="layui-card-body">
+                        基于SpringBoot的服务器智能监控报警平台的开发目标是：
+                        <span style="font-size: 20px;">“三分钟发现问题，五分钟解决问题”。</span><br>
+                        <br>
+
+                        <h1>简介</h1>
+                        <br>
+                        该平台可以实现同时监控CPU、磁盘、内存、堆内存、GC、线程这六项，
+                        同时可以做到分钟级的问题定位，将问题发现的时间缩小到最短。
+                        同时该系统的监控模块做到了真正的轻量级，可以很方便的接入到监控系统中，
+                        <br>
+                        <br>
+                        <h1>主要特点</h1>
+                        <br>
+                        <h2>1、监控项广泛</h2>
+                        <br>
+                        同时监控CPU、磁盘、内存、堆内存、GC、线程这六项，其中堆内存，GC，线程这三项可选。在不同的项目系统中可以选择是否需要这三项监控。
+                        同时该系统的监控模块做到了真正的轻量级，可以很方便的接入到监控系统中，
+
+                        <hr>
+                        <br>
+                        <h2>2、监控粒度细微</h2>
+                        <br>
+                        监控粒度为最小每分钟一次（可以自定义大小），能够尽快的发现系统异常，降低系统间歇性触发阈值的风险，同时可以更快一步进行报警。
+
+                        <hr>
+                        <br>
+                        <h2>3、易接入</h2>
+                        <br>
+                        接入流程简单。总览：一个配置类，一个库文件，maven配置依赖或jar依赖。
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">配置类示例</label>
+                            <div class="layui-input-block">
+                                <textarea id="vod_content" name="<?php echo $info['Field'];?>" type="text/plain" style="width:99%;height:250px">
+
+                                </textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<div class="layui-footer footer">
+    <div class="layui-container">
+        <div class="layui-col-md3 layui-col-lg-offset1 friend-link">
+            <span>友情链接</span><br>
+            <span class="layui-breadcrumb frient-link-span" lay-separator="/">
+                  <a href="http://jingao,site">私人博客</a>
+                  <a href="http://jingao,site">CSDN博客</a>
+                  <a href="http://jingao,site">GitHub</a>
+            </span>
+        </div>
+        <div class="layui-col-md3 layui-col-lg-offset1 banquan">
+            <!-- 底部固定区域 -->
+            © jingao.site - 欢迎使用智能监控平台
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

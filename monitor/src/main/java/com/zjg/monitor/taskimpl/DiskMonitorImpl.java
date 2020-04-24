@@ -1,10 +1,9 @@
 package com.zjg.monitor.taskimpl;
 
-import com.zjg.monitor.mq.ProducterUtil;
-import com.zjg.monitor.response.BaseResult;
+import com.zjg.monitor.mq.Producter;
+import com.zjg.monitor.response.BaseMessage;
 import com.zjg.monitor.response.DiskResult;
 import com.zjg.monitor.task.MonitorTask;
-import com.zjg.monitor.util.Contant;
 import lombok.extern.slf4j.Slf4j;
 import org.hyperic.sigar.FileSystem;
 import org.hyperic.sigar.FileSystemUsage;
@@ -59,16 +58,16 @@ public class DiskMonitorImpl implements MonitorTask, Runnable{
                 }
                 diskList.add(disk);
             }
-            diskResult.setCode(BaseResult.CodeEnum.OK.getCode());
+            diskResult.setCode(BaseMessage.CodeEnum.OK);
         } catch (SigarException e) {
             e.printStackTrace();
-            diskResult.setCode(BaseResult.CodeEnum.ERROR.getCode());
+            diskResult.setCode(BaseMessage.CodeEnum.ERROR);
             diskResult.setMsg(e.getMessage());
         } finally {
             sigar.close();
         }
         diskResult.setDisks(diskList);
-        ProducterUtil.send(diskResult);
+        Producter.send(diskResult);
     }
 
 }

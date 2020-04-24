@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>controleverything</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/threshold.css}">
+</head>
+<body>
+<div class="">
+    <ul class="layui-nav layui-bg-green headerul" lay-filter="">
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/index}">首页</a></li>
+        <li class="layui-nav-item layui-this"><a href="threshold.html" th:href="@{/req/threshold}">阈值配置</a></li>
+        <li class="layui-nav-item"><a href="monitor.html" th:href="@{/req/monitor}">监控数据查看</a></li>
+        <li class="layui-nav-item"><a href="system.html" th:href="@{/req/system}">系统管理</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/deadthread}">死锁检测</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/audiorecord}">报警记录查看</a></li>
+    </ul>
+
+    <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            <ul class="layui-nav layui-nav-tree layui-bg-green" lay-filter="test">
+                <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                <li class="layui-nav-item"><a href="#" th:href="@{/req/system}">已监控系统</a></li>
+                <li class="layui-nav-item layui-this"><a href="">阈值配置</a></li>
+            </ul>
+
+        </div>
+        <div class="layui-col-md9">
+            <!--当前位置-->
+            <div class="content-location">
+                <span class="layui-breadcrumb" lay-separator="/">
+                  <a href="">监控平台</a>
+                  <a href="">系统管理</a>
+                  <a href="">阈值配置</a>
+                </span>
+            </div>
+            <hr/>
+
+            <div class="content-system-table">
+                <div class="layui-input-block input-div">
+                    <input type="text" name="system" id="systemName" required lay-verify="required" placeholder="系统名"
+                           autocomplete="off" class="layui-input input">
+                    <button type="button" class="layui-btn layui-btn" onclick="search()">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                    <button type="button" class="layui-btn layui-btn" onclick="insertLayer()">
+                        <i class="layui-icon layui-icon-add-circle"></i>
+                    </button>
+                </div>
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>系统名</th>
+                        <th>监控类型</th>
+                        <th>监控属性</th>
+                        <th>阈值</th>
+                        <th>操作</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div id="page"></div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--修改阈值信息-->
+<div id="layer" class="layerdiv">
+    <form class="layui-form" id="updateForm">
+        <input type="hidden" name="id" id="updateId"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">阈值</label>
+            <div class="layui-input-block">
+                <input type="text" name="threshold" id="updateThreshold" required lay-verify="required"
+                       placeholder="请输入阈值" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!--插入阈值-->
+<div id="layerInsert" class="layerdiv">
+    <form class="layui-form" id="insertForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">系统名</label>
+            <div class="layui-input-block">
+                <select name="systemName" lay-verify="required" id="insertSystemName">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">监控类型</label>
+            <div class="layui-input-block">
+                <select name="monitorType" lay-verify="required" class="select">
+                    <option value=""></option>
+                    <option value="CPU">CPU</option>
+                    <option value="DISK">磁盘</option>
+                    <option value="MEMORY">内存</option>
+                    <option value="GC">GC</option>
+                    <option value="HEAD_MEMORY">堆内存</option>
+                    <option value="THREAD">线程</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">监控属性</label>
+            <div class="layui-input-block">
+                <select name="monitorKey" lay-verify="required" class="select">
+                    <option value="average">cpu:平均使用率</option>
+                    <option value="canUseSpace">disk:磁盘可用空间</option>
+                    <option value="spaceRate">disk:磁盘空间使用率</option>
+                    <option value="memoryRate">memory:内存使用率</option>
+                    <option value="headMemoryRate">headMemory:堆内存使用率</option>
+                    <option value="threadNum">thread:线程总数</option>
+                    <option value="threadDead">thread:死锁线程数</option>
+                    <option value="gcCount">gc:gc次数</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">阈值</label>
+            <div class="layui-input-block">
+                <input type="text" name="threshold" required lay-verify="required" placeholder="请输入阈值"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="insertForm">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="footer::footer"></div>
+<script th:src="@{/layui/lay/modules/layer.js}"></script>
+<script>
+
+
+    function insertLayer() {
+        layui.use('form', function () {
+            var form = layui.form;
+            layer.open({
+                type: 1,
+                content: $('#layerInsert')
+            });
+            getInsertDate(form);
+            form.on('select(filter)', function(data){
+                console.log(data.value);
+                getInsertDate(form);
+            });
+            form.on('submit(insertForm)', function (data) {
+                var systemIdAndName = data.field.systemName.split(";");
+                var systemId = systemIdAndName[0];
+                var systemName = systemIdAndName[1];
+                var monitorType = data.field.monitorType;
+                var monitorKey = data.field.monitorKey;
+                var threshold = data.field.threshold;
+                $.post("/threshold/insert", {
+                    systemId: systemId,
+                    systemName: systemName,
+                    monitorType: monitorType,
+                    monitorKey: monitorKey,
+                    threshold: threshold
+                }, function (date) {
+                    if (date === true) {
+                        layer.msg("添加成功");
+                    } else {
+                        layer.msg("添加失败，数据不正确或该阈值已存在");
+
+                    }
+                });
+            });
+        });
+    }
+
+    function getInsertDate(form) {
+        $.get("/system/select/all", {}, function (data) {
+            var html = "<option value=\"\"></option>";
+            for (var i = 0; i < data.length; i++) {
+                html += "<option value=\"" + data[i].id + ";" + data[i].systemName + "\">" + data[i].systemName + "</option>"
+            }
+            var insertSystemName = $("#insertSystemName");
+            insertSystemName.empty();
+            insertSystemName.append(html);
+            form.render('select');
+        });
+    }
+
+    /**
+     * 修改表单提交
+     */
+    function update(recordMsg) {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(formDemo)', function (data) {
+                var id = data.field.id;
+                var threshold = data.field.threshold;
+                if (threshold == null || threshold <= 0) {
+                    layer.msg("阈值小于等于0");
+                    return false;
+                }
+                $.post("/threshold/update", {
+                    id: id,
+                    threshold: threshold
+                }, function (date) {
+                    if (date === true) {
+                        layer.msg("修改成功");
+                    } else {
+                        layer.msg("修改失败");
+                    }
+                }).error(function () {
+                    layer.msg("error");
+                });
+                return false;
+            });
+        });
+        var record = recordMsg.split(";");
+        $("#updateId").attr("value", record[0]);
+        if (record[1] != null && record[1] !== "null") {
+            $("#updateThreshold").val(record[1]);
+        }
+        layer.open({
+            type: 1,
+            content: $('#layer')
+        });
+    }
+
+    //记录总条数,-1为首次加载或非分页触发的加载数据
+    var total = -1;
+
+    //获得搜索条件
+    var systemName = null;
+
+    //搜索
+    function search() {
+        systemName = $('#systemName').val();
+        total = -1;
+        showRecord(1, 10, systemName);
+    }
+
+    //删除
+    function deleteRecord(id) {
+        $.post("/threshold/delete/" + id, {}, function (data) {
+            if (data === true) {
+                layer.msg("删除成功");
+            } else {
+                layer.msg("删除失败");
+            }
+        });
+        systemName = $('#systemName').val();
+        total = -1;
+        showRecord(1, 10, systemName);
+    }
+
+    /**
+     * 初始化加载首页十条数据
+     */
+    showRecord(1, 10, systemName);
+
+    function showRecord(pageNo, pageSize, systemName) {
+        $('tbody').empty();
+        $.get("/threshold/select", {
+                pageNum: pageNo,
+                pageSize: pageSize,
+                systemName: systemName
+            }, function (date) {
+                //加载后台返回的List集合数据
+                var record = date.records;
+                if (total === -1) {
+                    total = date.total;
+                    page();
+                } else {
+                    total = date.total;
+                }
+                for (var i = 0; i < record.length; i++) {
+                    var td = $("<td></td>").text(record[i].id);
+                    var td2 = $("<td></td>").text(record[i].systemName);
+                    var td3 = $("<td></td>").text(record[i].monitorType);
+                    var td4 = $("<td></td>").text(record[i].monitorKey);
+                    var td5 = $("<td></td>").text(record[i].threshold);
+                    var msg = record[i].id + ";" + record[i].threshold;
+                    var td6 = "<td><button type=\"button\" class=\"layui-btn layui-btn-xs\" name=" + msg + " onclick=\"update(this.name)\">\n" +
+                        "                                <i class=\"layui-icon\">&#xe642;</i>\n" +
+                        "                            </button></td>";
+                    var td7 = "<td><button type=\"button\" class=\"layui-btn layui-btn-xs\" onclick=\"deleteRecord(" + record[i].id + ")\">\n" +
+                        "                                <i class=\"layui-icon\">&#xe640;</i>\n" +
+                        "                            </button></td>";
+                    var tr = $("<tr></tr>").append(td, td2, td3, td4, td5, td6, td7);
+                    $('tbody').append(tr);
+                }
+            },
+            "json"
+        );
+    }
+
+    function page() {
+        layui.use('laypage', function () {
+            var laypage = layui.laypage;
+
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page'
+                , limit: 10
+                , count: total //数据总数，从服务端得到
+                , layout: ['limit', 'prev', 'page', 'next']
+                , limits: [10, 20, 30]
+                , jump: function (obj, first) { //obj为当前页的属性和方法，第一次加载first为true
+                    //非首次加载 do something
+                    if (!first) {
+                        //重新加载搜索条件
+                        var systemName = $('#systemName').val();
+                        //调用加载函数加载数据
+                        showRecord(obj.curr, obj.limit, systemName);
+                    }
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>

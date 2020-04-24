@@ -1,7 +1,7 @@
 package com.zjg.monitor.taskimpl;
 
-import com.zjg.monitor.mq.ProducterUtil;
-import com.zjg.monitor.response.BaseResult;
+import com.zjg.monitor.mq.Producter;
+import com.zjg.monitor.response.BaseMessage;
 import com.zjg.monitor.response.GcResult;
 import com.zjg.monitor.task.MonitorTask;
 
@@ -48,14 +48,14 @@ public class GCMonitorImpl implements MonitorTask, Runnable{
                 gcs.add(gc);
             }
             gcResult.setGcCount(gcTotalCount);
-            gcResult.setCode(BaseResult.CodeEnum.OK.getCode());
+            gcResult.setCode(BaseMessage.CodeEnum.OK);
             gcResult.setGcs(gcs);
         } catch (Exception e) {
             e.printStackTrace();
-            gcResult.setCode(BaseResult.CodeEnum.ERROR.getCode());
+            gcResult.setCode(BaseMessage.CodeEnum.ERROR);
             gcResult.setMsg(e.getMessage());
         }
-        ProducterUtil.send(gcResult);
+        Producter.send(gcResult);
     }
 
 }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links,styles)">
+    <meta charset="UTF-8">
+    <title>智能监控</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <th:block th:replace="${links}" />
+</head>
+<body>
+</body>
+</html>

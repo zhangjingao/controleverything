@@ -1,7 +1,7 @@
 package com.zjg.monitor.taskimpl;
 
-import com.zjg.monitor.mq.ProducterUtil;
-import com.zjg.monitor.response.BaseResult;
+import com.zjg.monitor.mq.Producter;
+import com.zjg.monitor.response.BaseMessage;
 import com.zjg.monitor.response.MemoryResult;
 import com.zjg.monitor.task.MonitorTask;
 import org.hyperic.sigar.Mem;
@@ -39,13 +39,13 @@ public class MemoryMonitorImpl implements MonitorTask, Runnable{
             memoryResult.setUsedMemory((double) mem.getUsed() / 1024L / 1024L / 1024L);
             memoryResult.setFreeMemory((double) mem.getFree() / 1024L / 1024L / 1024L);
             memoryResult.setMemoryRate(mem.getUsedPercent());
-            memoryResult.setCode(BaseResult.CodeEnum.OK.getCode());
+            memoryResult.setCode(BaseMessage.CodeEnum.OK);
         } catch (SigarException e) {
             e.printStackTrace();
-            memoryResult.setCode(BaseResult.CodeEnum.ERROR.getCode());
+            memoryResult.setCode(BaseMessage.CodeEnum.ERROR);
             memoryResult.setMsg(e.getMessage());
         }
-        ProducterUtil.send(memoryResult);
+        Producter.send(memoryResult);
     }
 
 

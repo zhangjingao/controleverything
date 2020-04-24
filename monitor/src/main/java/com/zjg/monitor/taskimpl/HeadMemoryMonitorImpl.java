@@ -1,7 +1,7 @@
 package com.zjg.monitor.taskimpl;
 
-import com.zjg.monitor.mq.ProducterUtil;
-import com.zjg.monitor.response.BaseResult;
+import com.zjg.monitor.mq.Producter;
+import com.zjg.monitor.response.BaseMessage;
 import com.zjg.monitor.response.HeadMemoryResult;
 import com.zjg.monitor.task.MonitorTask;
 
@@ -36,13 +36,13 @@ public class HeadMemoryMonitorImpl implements MonitorTask, Runnable{
             result.setInitMemory((double) memoryMXBean.getInit() / 1024 / 1024);
             result.setUsedMemory((double) memoryMXBean.getUsed() / 1024 / 1024);
             result.setHeadMemoryRate((double) memoryMXBean.getUsed() / memoryMXBean.getMax());
-            result.setCode(BaseResult.CodeEnum.OK.getCode());
+            result.setCode(BaseMessage.CodeEnum.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            result.setCode(BaseResult.CodeEnum.ERROR.getCode());
+            result.setCode(BaseMessage.CodeEnum.ERROR);
             result.setMsg(e.getMessage());
         }
-        ProducterUtil.send(result);
+        Producter.send(result);
     }
 
 

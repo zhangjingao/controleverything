@@ -4,6 +4,7 @@ import com.zjg.monitor.util.Config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,16 +13,17 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CpuResult extends BaseResult {
+public class CpuResult extends BaseMessage {
 
     /**
      * 几个cpu的使用率
      */
-    private List<Double> cpuRates;
+    private List<String> cpuRates;
 
     public CpuResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.CPU);
+        this.setCurrTime(new Date());
     }
 
 }

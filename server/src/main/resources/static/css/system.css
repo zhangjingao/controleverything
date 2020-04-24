@@ -1,0 +1,32 @@
+
+/* 导航栏 */
+.headerul{
+    padding: 0 200px;
+}
+
+/* 当前位置 */
+.content-location{
+    padding-top:20px;
+
+}
+
+/* 系统管理表格 */
+.content-system-table{
+    padding-top: 20px;
+}
+/* 搜索框*/
+.input-div{
+    float: right;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.input{
+    display: inline;
+    width: 200px;
+    padding-left:10px;
+}
+/*弹出层*/
+.layerdiv{
+    display:none;
+    padding:20px;
+}

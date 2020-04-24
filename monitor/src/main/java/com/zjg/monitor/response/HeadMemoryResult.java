@@ -4,13 +4,15 @@ import com.zjg.monitor.util.Config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * @Author zhangjingao3
  * @Date 2020/3/26 19:07
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class HeadMemoryResult extends BaseResult {
+public class HeadMemoryResult extends BaseMessage {
 
     /**
      * 可以获得的最大堆内存
@@ -32,6 +34,7 @@ public class HeadMemoryResult extends BaseResult {
     public HeadMemoryResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.HEAD_MEMORY);
+        this.setCurrTime(new Date());
     }
 
 }

@@ -5,15 +5,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.lang.management.ThreadInfo;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @Author zhangjingao3
  * @Date 2020/3/27 12:43
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ThreadResult extends BaseResult {
+@EqualsAndHashCode(callSuper = true)
+public class ThreadResult extends BaseMessage {
 
     /**
      * 线程总数
@@ -27,7 +28,7 @@ public class ThreadResult extends BaseResult {
     /**
      * 守护线程信息
      */
-    private List<ThreadInfo> threadInfos;
+    private String threadInfos;
 
     /**
      * 死锁线程
@@ -36,11 +37,12 @@ public class ThreadResult extends BaseResult {
     /**
      * 死锁线程信息
      */
-    private List<ThreadInfo> deadLockThreadInfo;
+    private String deadLockThreadInfo;
 
     public ThreadResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.THREAD);
+        this.setCurrTime(new Date());
     }
 
 }

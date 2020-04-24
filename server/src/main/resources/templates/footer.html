@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>底部</title>
+</head>
+<body class="layui-layout-body">
+<div class="layui-footer footer" th:fragment="footer">
+    <div class="layui-container">
+        <div class="layui-col-md3 layui-col-lg-offset1 friend-link">
+            <span>友情链接</span><br>
+            <span class="layui-breadcrumb frient-link-span" lay-separator="/">
+                  <a href="http://jingao,site">私人博客</a>
+                  <a href="http://jingao,site">CSDN博客</a>
+                  <a href="http://jingao,site">GitHub</a>
+            </span>
+        </div>
+        <div class="layui-col-md3 layui-col-lg-offset1 banquan">
+            <!-- 底部固定区域 -->
+            © jingao.site - 欢迎使用智能监控平台
+        </div>
+    </div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+</div>
+</body>
+</html>

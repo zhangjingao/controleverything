@@ -4,6 +4,7 @@ import com.zjg.monitor.util.Config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DiskResult extends BaseResult {
+public class DiskResult extends BaseMessage {
 
     /**
      * 多个磁盘
@@ -22,6 +23,7 @@ public class DiskResult extends BaseResult {
     public DiskResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.DISK);
+        this.setCurrTime(new Date());
     }
 
     @Data

@@ -1,6 +1,9 @@
 package com.zjg.monitor.util;
 
 import lombok.Data;
+import org.springframework.util.StringUtils;
+
+import java.io.File;
 
 /**
  * 获得配置信息
@@ -16,11 +19,13 @@ public class Config {
 
     protected static void setAppName(){
         String appProjectDir = System.getProperty("user.dir");
-        String[] dirPaths = appProjectDir.split("/");
-        appName = dirPaths[dirPaths.length - 1];
+        appName = appProjectDir.substring(appProjectDir.lastIndexOf(File.separator) + 1);
     }
 
     public static String getAppName () {
+        if (StringUtils.isEmpty(appName)){
+            setAppName();
+        }
         return appName;
     }
 

@@ -2,7 +2,9 @@ package com.zjg.monitor.response;
 
 import com.zjg.monitor.util.Config;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +12,8 @@ import java.util.List;
  * @Date 2020/3/26 16:21
  */
 @Data
-public class GcResult extends BaseResult {
+@EqualsAndHashCode(callSuper = true)
+public class GcResult extends BaseMessage {
 
     private List<GC> gcs;
     /**
@@ -21,6 +24,7 @@ public class GcResult extends BaseResult {
     public GcResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.GC);
+        this.setCurrTime(new Date());
     }
 
     @Data

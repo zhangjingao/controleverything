@@ -4,13 +4,15 @@ import com.zjg.monitor.util.Config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * @Author zhangjingao3
  * @Date 2020/3/27 11:25
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class MemoryResult extends BaseResult {
+@EqualsAndHashCode(callSuper = true)
+public class MemoryResult extends BaseMessage {
 
     /**
      * 内存总量
@@ -32,5 +34,6 @@ public class MemoryResult extends BaseResult {
     public MemoryResult () {
         this.setSystem(Config.getAppName());
         this.setMsgType(MsgType.MEMORY);
+        this.setCurrTime(new Date());
     }
 }

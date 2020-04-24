@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: common_header(~{::title},~{::link},~{})">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/system.css}">
+</head>
+<body>
+<div class="">
+    <ul class="layui-nav layui-bg-green headerul" lay-filter="">
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/index}">首页</a></li>
+        <li class="layui-nav-item"><a href="threshold.html" th:href="@{/req/threshold}">阈值配置</a></li>
+        <li class="layui-nav-item"><a href="monitor.html" th:href="@{/req/monitor}">监控数据查看</a></li>
+        <li class="layui-nav-item layui-this"><a href="system.html" th:href="@{/req/system}">系统管理</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/deadthread}">死锁检测</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/audiorecord}">报警记录查看</a></li>
+    </ul>
+
+    <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+
+    <div class="layui-row">
+        <div class="layui-col-md3 side-header">
+            <ul class="layui-nav layui-nav-tree layui-bg-green" lay-filter="test">
+                <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                <li class="layui-nav-item layui-this"><a href="">已监控系统</a></li>
+                <li class="layui-nav-item"><a href="">阈值配置</a></li>
+            </ul>
+
+        </div>
+        <div class="layui-col-md9">
+            <!--当前位置-->
+            <div class="content-location">
+                <span class="layui-breadcrumb" lay-separator="/">
+                  <a href="">监控平台</a>
+                  <a href="">系统管理</a>
+                </span>
+            </div>
+            <hr/>
+
+            <div class="content-system-table">
+                <div class="layui-input-block input-div">
+                    <input type="text" name="system" id="systemName" required lay-verify="required" placeholder="系统名" autocomplete="off" class="layui-input input">
+                    <button type="button" class="layui-btn" id="search">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                </div>
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>系统名</th>
+                        <th>报警邮件</th>
+                        <th>累计报警</th>
+                        <th>报警开关</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--修改系统信息-->
+<div id="layer" class="layerdiv">
+    <form class="layui-form" id="updateForm" >
+        <input type="hidden" name="id" id="updateId"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">报警开关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="stopAudio" id="updateStopAudio"  lay-skin="switch" lay-text="开启|关闭">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">报警邮件</label>
+            <div class="layui-input-block">
+                <textarea name="emails" id="updateEmails" placeholder="请输入报警通知邮件，多个之间使用，隔开" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- 引入footer及公用footer -->
+<div th:replace="footer::footer"></div>
+<script th:src="@{/layui/lay/modules/layer.js}"></script>
+<script>
+
+    /**
+     * 修改表单提交
+     */
+    function update(recordMsg){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on('submit(formDemo)', function(data){
+                var id = data.field.id;
+                var emails = data.field.emails;
+                var stopAudio = data.field.stopAudio;
+                stopAudio = stopAudio !== "on";
+                $.post("/system/update",{
+                    id: id,
+                    emails: emails,
+                    stopAudio: stopAudio
+                }, function (date) {
+                    if (date === true) {
+                        layer.msg("修改成功");
+                    } else {
+                        layer.msg("修改失败");
+                    }
+                }).error(function() { layer.msg("error");
+                });
+                return true;
+            });
+        });
+        var record = recordMsg.split(";");
+        $("#updateId").attr("value",record[0]);
+        if (record[1] != null && record[1] !== "null") {
+            $("#updateEmails").val(record[1]);
+        }
+        if (record[2] == null || record[2] === "false") {
+            $("#updateStopAudio").attr("checked",'checked');
+        }
+        layer.open({
+            type: 1,
+            content: $('#layer')
+        });
+    }
+
+    //记录总条数,-1为首次加载或非分页触发的加载数据
+    var total = -1;
+
+    //获得搜索条件
+    var systemName = null;
+    //搜索
+    $("#search").click(function(){
+        systemName = $('#systemName').val();
+        total = -1;
+        showRecord(1,10, systemName);
+    });
+    /**
+     * 初始化加载首页十条数据
+     */
+    showRecord(1,10, systemName);
+
+    function showRecord(pageNo, pageSize, systemName){
+        $('tbody').empty();
+        $.get("/system/select",{
+                pageNum:pageNo,
+                pageSize:pageSize,
+                systemName: systemName
+            }, function (date) {
+                //加载后台返回的List集合数据
+                var record = date.records;
+                if (total === -1) {
+                    total = date.total;
+                    page();
+                } else {
+                    total = date.total;
+                }
+                for (var i = 0; i < record.length; i++) {
+                    var td = $("<td></td>").text(record[i].id);
+                    var td2 = $("<td></td>").text(record[i].systemName);
+                    var td3 = $("<td></td>").text(record[i].emails);
+                    var td4 = $("<td></td>").text(record[i].audioCount);
+                    var td5 = null;
+                    if (record[i].stopAudio === false) {
+                        td5 = $("<td></td>").text("开");
+                    } else {
+                        td5 = $("<td></td>").text("关");
+                    }
+                    var msg = record[i].id + ";" + record[i].emails +
+                            ";" + record[i].stopAudio;
+                    var td6 = "<td><button type=\"button\" class=\"layui-btn layui-btn-xs\" name=" + msg + " onclick=\"update(this.name)\">\n" +
+                        "                                <i class=\"layui-icon\">&#xe642;</i>\n" +
+                        "                            </button></td>";
+                    var tr = $("<tr></tr>").append(td, td2, td3, td4, td5, td6);
+                    $('tbody').append(tr);
+                }
+            },
+            "json"
+        );
+    }
+    function page() {
+        layui.use('laypage', function(){
+            var laypage = layui.laypage;
+
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page'
+                ,limit: 10
+                ,count: total //数据总数，从服务端得到
+                ,layout:['limit', 'prev', 'page', 'next']
+                ,limits: [10, 20, 30]
+                ,jump: function (obj, first) { //obj为当前页的属性和方法，第一次加载first为true
+                    //非首次加载 do something
+                    if (!first) {
+                        //重新加载搜索条件
+                        var systemName = $('#systemName').val();
+                        //调用加载函数加载数据
+                        showRecord(obj.curr,obj.limit, systemName);
+                    }
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

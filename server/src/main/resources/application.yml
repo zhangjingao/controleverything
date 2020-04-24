@@ -1,0 +1,42 @@
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+  jackson:
+    time-zone: GMT+8
+
+  resources:
+    static-locations: classpath:/static/
+
+  kafka:
+    consumer:
+      enable-auto-commit: false
+      auto-commit-interval: 100ms
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: group_1
+    bootstrap-servers: 39.106.214.166:9092
+
+  #mybatis
+  datasource:
+    url: jdbc:mysql://localhost:3306/controleverything?serverTimezone=GMT%2B8&&useSSL=true&characterEncoding=utf8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+email:
+  fromEmail: 1763608200@qq.com
+  password:
+  fromNick:
+  mailTitlePrefix: 风控部门提示您
+
+

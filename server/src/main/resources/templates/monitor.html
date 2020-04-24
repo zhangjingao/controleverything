@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: common_header(~{::title},~{::link},~{})">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/monitor.css}">
+</head>
+<body>
+<div class="">
+    <ul class="layui-nav layui-bg-green headerul" lay-filter="">
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/index}">首页</a></li>
+        <li class="layui-nav-item"><a href="threshold.html" th:href="@{/req/threshold}">阈值配置</a></li>
+        <li class="layui-nav-item layui-this"><a href="monitor.html" th:href="@{/req/monitor}">监控数据查看</a></li>
+        <li class="layui-nav-item"><a href="system.html" th:href="@{/req/system}">系统管理</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/deadthread}">死锁检测</a></li>
+        <li class="layui-nav-item"><a href="#" th:href="@{/req/audiorecord}">报警记录查看</a></li>
+    </ul>
+
+    <div class="layui-carousel" id="test1">
+        <div carousel-item>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+            <div><img th:src="@{/images/7.jpg}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-container">
+
+    <div class="layui-row">
+        <div class="layui-col-md3 side-header">
+            <ul class="layui-nav layui-nav-tree layui-bg-green" lay-filter="nav-side">
+                <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                <li class="layui-nav-item layui-this" onclick="monitor('cpu')"><a href="#">CPU</a></li>
+                <li class="layui-nav-item" id="disk" onclick="monitor('disk')"><a href="#">磁盘</a></li>
+                <li class="layui-nav-item" id="memory" onclick="monitor('memory')"><a href="#">内存</a></li>
+                <li class="layui-nav-item" id="thread" onclick="monitor('thread')"><a href="#">线程</a></li>
+                <li class="layui-nav-item" id="gc" onclick="monitor('gc')"><a href="#">GC</a></li>
+                <li class="layui-nav-item" id="headmemory" onclick="monitor('headmemory')"><a href="#">堆内存</a></li>
+            </ul>
+
+        </div>
+        <div class="layui-col-md9">
+            <!--当前位置-->
+            <div class="content-location">
+                <span class="layui-breadcrumb" lay-separator="/">
+                  <a href="">监控平台</a>
+                  <a href="">监控数据查看</a>
+                </span>
+            </div>
+            <hr/>
+
+            <div class="content-charts">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block input-div">
+                        <input type="text" name="system" id="systemName" required lay-verify="required" placeholder="系统名" autocomplete="off" class="layui-input input">
+                        <input type="text" id="dateTime"  class="layui-input input" placeholder="选择时间范围">
+                        <button type="button" class="layui-btn" onclick="search()">
+                            <i class="layui-icon layui-icon-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="charts"></div>
+                <div id="chartsDisk"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 引入footer及公用footer -->
+<div th:replace="footer::footer"></div>
+<script th:src="@{/layui/lay/modules/layer.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
+<script th:src="@{/js/monitor.js}"></script>
+</body>
+</html>
