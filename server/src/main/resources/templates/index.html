@@ -73,19 +73,81 @@
                         <h2>3、易接入</h2>
                         <br>
                         接入流程简单。总览：一个配置类，一个库文件，maven配置依赖或jar依赖。
+                        <h3>3.1、配置类</h3>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">配置类示例</label>
-                            <div class="layui-input-block">
-                                <textarea id="vod_content" name="<?php echo $info['Field'];?>" type="text/plain" style="width:99%;height:250px">
+                            <pre class="layui-code">
+package com.example.onlinewrite;
 
-                                </textarea>
-                            </div>
+import com.zjg.monitor.timer.TimerTask;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author zjg
+ * <p> 2020/4/13 20:19 </p>
+ */
+@Component
+@EnableScheduling
+public class TimerQuartz {
+
+    /**
+     * 必须是引用的jar包下的TimerTask，包名：com.zjg.monitor.timer
+     */
+    private TimerTask timerTask = new TimerTask();
+    /**
+     * 自定义其他选项
+     * 1：不获取守护线程及死锁线程信息，只获取数目，false为只获取数目，不获取线程信息，true都获取
+     * 2：自定义线程池，不传默认是6个核心和最大线程的线程池
+     * 3：开启所有监控项，false则只开启cpu，磁盘，内存监控，true开启所有监控
+     */
+//    private TimerTask timerTask = new TimerTask(false, new ThreadPoolExecutor(6, 6, 2L, TimeUnit.MINUTES, new LinkedBlockingQueue()), true);
+
+    /**
+     * 执行频率为1分钟一次，可以自定义，建议1分钟
+     */
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void run () {
+        System.out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()) + "-timer is start");
+        timerTask.monitor();
+    }
+
+}
+
+                            </pre>
                         </div>
+                        <br>
+                        <hr>
+
+                        <br>
+                        <h3>3.2、maven依赖及jar依赖</h3>
+                        <br>
+                        <span>首先拿到监控模块，配置好自己的kafka的topic后，重新打包成jar，
+                            如果是使用jar直接拷贝到监控系统中，或者使用如下方式导入maven中</span><br>
+                        groupId:&emsp;com.zjg<br>
+                        artifactId:&emsp;monitor<br>
+                        version:&emsp;1.0-SNAPSHOT<br>
+                        <br>
+                        <hr>
+
+                        <br>
+                        <h3>3.3、操作系统库文件,注意区分系统</h3>
+                        <br>
+                        <div class="layui-form-item">
+                            <a href="https://download.csdn.net/download/zhangjingao/12359260">下载链接</a>
+                        </div>
+                        <br>
+                        <hr>
 
                     </div>
                 </div>
             </div>
-
 
         </div>
     </div>

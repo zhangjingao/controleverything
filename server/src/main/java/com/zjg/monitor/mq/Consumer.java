@@ -58,10 +58,10 @@ public class Consumer {
     private AbstractMessageHandler builderMessageHandler() {
         errorMessageHandler.setNextHandler(cpuMessageHandler);
         cpuMessageHandler.setNextHandler(diskMessageHandler);
-        diskMessageHandler.setNextHandler(gcMessageHandler);
+        diskMessageHandler.setNextHandler(memoryMessageHandler);
+        memoryMessageHandler.setNextHandler(gcMessageHandler);
         gcMessageHandler.setNextHandler(headMemoryMessageHandler);
-        headMemoryMessageHandler.setNextHandler(memoryMessageHandler);
-        memoryMessageHandler.setNextHandler(threadsMessageHandler);
+        headMemoryMessageHandler.setNextHandler(threadsMessageHandler);
         return errorMessageHandler;
     }
 

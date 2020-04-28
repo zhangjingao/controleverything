@@ -84,10 +84,6 @@ public class CpuMessageHandler extends AbstractMessageHandler {
 
     }
 
-    public static void main(String[] args) {
-    }
-
-
     /**
      * 根据cpu个数构建cpu编号
      */

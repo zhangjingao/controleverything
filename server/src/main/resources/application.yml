@@ -6,7 +6,7 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   jackson:
-    time-zone: GMT+8
+    time-zoneGMT+8
 
   resources:
     static-locations: classpath:/static/

@@ -29,7 +29,7 @@ public class TimeBuilderUtil {
      * * 根据时间获得cpu信息
      * 180个刻度为最大观看频率
      * 3个小时为界，3小时以内取分钟，3小时以上半小时取一个点
-     * 3.75天为界，小时半小时取一个点，大于3.75天取半天
+     * 3天为界，3天内半小时取一个点，大于3天取半天
      * 最大观看也就是3个月
      */
     public static List<Date> buildTime(Date startTime, Date stopTime) {

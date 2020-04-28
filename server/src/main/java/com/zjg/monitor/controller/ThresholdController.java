@@ -44,7 +44,7 @@ public class ThresholdController {
                           @RequestParam double threshold
                           ){
         if (systemId == 0 || StringUtils.isEmpty(systemName) ||
-                StringUtils.isEmpty(monitorType) || StringUtils.isEmpty(monitorKey)|| threshold <= 0) {
+                StringUtils.isEmpty(monitorType) || StringUtils.isEmpty(monitorKey)|| threshold < 0) {
             log.error("插入数据请求不全");
             return false;
         }
