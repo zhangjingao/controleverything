@@ -87,6 +87,7 @@ public class ThreadsServiceImpl implements ThreadsService {
     public IPage<Threads> select(int pageNum, int pageSize, String systemName) {
         QueryWrapper<Threads> queryWrapper = new QueryWrapper<>();
         queryWrapper.gt("dead_lock_thread_count", 0);
+        queryWrapper.orderByDesc("id");
         if (!StringUtils.isEmpty(systemName)) {
             queryWrapper.like("system", systemName);
         }

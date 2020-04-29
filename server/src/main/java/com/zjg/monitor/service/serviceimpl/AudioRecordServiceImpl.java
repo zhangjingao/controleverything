@@ -37,6 +37,7 @@ public class AudioRecordServiceImpl implements AudioRecordService {
     public IPage<AudioRecord> select(int pageNum, int pageSize, String systemName) {
         Page<AudioRecord> page = new Page<>(pageNum, pageSize);
         QueryWrapper<AudioRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
         if (!StringUtils.isEmpty(systemName)) {
             queryWrapper.like("system_name", systemName);
         }

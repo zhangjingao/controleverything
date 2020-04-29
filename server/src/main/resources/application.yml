@@ -35,8 +35,8 @@ mybatis-plus:
 
 email:
   fromEmail: 1763608200@qq.com
-  password:
-  fromNick:
+  password: sazyokpzpalojbib
+  fromNick: ContrlEverything
   mailTitlePrefix: 风控部门提示您
 
 
