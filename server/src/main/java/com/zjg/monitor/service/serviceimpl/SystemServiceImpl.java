@@ -55,9 +55,8 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public void addAudioCount(Systems systems) {
         int count = systems.getAudioCount();
-        UpdateWrapper<Systems> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("audioCount", count + 1);
-        systemMapper.update(systems, updateWrapper);
+        systems.setAudioCount(count + 1);
+        systemMapper.updateById(systems);
     }
 
     @Override

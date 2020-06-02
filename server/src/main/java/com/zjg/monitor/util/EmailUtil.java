@@ -30,22 +30,22 @@ public class EmailUtil {
     /**
      * fromEmail是发件人的邮箱
      */
-    @Value("email.fromEmail")
+    @Value("${email.fromEmail}")
     private String fromEmail;
     /**
      * password是邮箱授权码
      */
-    @Value("email.password")
+    @Value("${email.password}")
     private String password;
     /**
      * 发件人昵称
      */
-    @Value("email.fromNick")
+    @Value("${email.fromNick}")
     private String fromNick;
     /**
      * 发件主题前缀
      */
-    @Value("email.mailTitlePrefix")
+    @Value("${email.mailTitlePrefix}")
     private String mailTitlePrefix;
 
     public boolean audio (String emails, String system, String audioType, String audioKey, double nowValue, double threshold) {
@@ -65,7 +65,7 @@ public class EmailUtil {
         try {
             sendMail(emailsList, mailTitle, content);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            log.error("邮件发送错误，发送人：{}，系统：{}, 报错内容：{}", JSON.toJSONString(emails), system ,content, e);
+            log.error("邮件发送错误，发送人：{}，系统：{}, 报错内容：{}, fromEmail" + fromEmail + " password " + password, JSON.toJSONString(emails), system ,content, e);
             return false;
         }
         return true;

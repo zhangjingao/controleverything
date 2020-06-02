@@ -192,8 +192,21 @@ function builderCharts(data, chartName) {
                 inside: false,
                 rotate: 20,
                 formatter: function (value) {
+                    console.log("value:" + value);
                     var time = value.split("T");
-                    return time[0] + " " + time[1].split(".")[0];
+                    var yearMonthDay = time[0].split("-");
+                    var year = Number(yearMonthDay[0]);
+                    var month = Number(yearMonthDay[1]);
+                    var day = Number(yearMonthDay[2]);
+                    var hourMinutesSecond = time[1].split(":");
+                    var hour = Number(hourMinutesSecond[0]);
+                    var minutes = Number(hourMinutesSecond[1]);
+                    var second = Number(hourMinutesSecond[2].substring(0,2));
+                    var date = new Date(year, month - 1,day, hour, minutes, second);
+                    date.setHours(date.getHours() + 8);
+                    var str = Number(date.getMonth()) + 1;
+                    return date.getFullYear() + "-" + str + "-" + date.getDate() + " " +
+                        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
                 }
             },
             type: 'category',
